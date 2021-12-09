@@ -234,6 +234,7 @@
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.1",
     "electron-updater": "^4.6.1",
+    "heatmapjs": "^2.0.2",
     "history": "4.x.x",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -260,6 +261,15 @@
         }
       }
     ],
-    "singleQuote": true
+    "printWidth": 120,
+    "tabWidth": 2,
+    "tabs": false,
+    "semi": true,
+    "trailingComma": "none",
+    "singleQuote": true,
+    "quoteProps": "as-needed",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "auto"
   }
 }

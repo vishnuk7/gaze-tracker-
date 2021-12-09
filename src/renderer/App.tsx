@@ -1,50 +1,26 @@
-import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
-import './App.css';
+import { useState } from 'react';
+// import styled, { css } from 'styled-components';
+import { ActionBar } from './ActionBar';
 
-const Hello = () => {
+function App() {
+  const [containerDiv, setContainerDiv] = useState<HTMLDivElement | null>();
+  const [bgImage, setBgImg] = useState<string | undefined>();
+
   return (
-    <div>
-      <div className="Hello">
-        <img width="200px" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
+    <div className="w-screen h-screen relative">
+      <div
+        style={{
+          background: bgImage && `url(${bgImage}) no-repeat center center fixed`
+        }}
+        className="h-full w-full overflow-hidden"
+        ref={(c) => setContainerDiv(c)}
+      >
+        <header className="flex w-full h-screen justify-center items-center">
+          {containerDiv && <ActionBar container={containerDiv} setBgImg={setBgImg} />}
+        </header>
       </div>
     </div>
   );
-};
-
-export default function App() {
-  return (
-    <Router>
-      <Switch>
-        <Route path="/" component={Hello} />
-      </Switch>
-    </Router>
-  );
 }
+
+export default App;
