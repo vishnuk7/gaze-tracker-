@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 import { useRef } from 'react';
-import { drawHeatmap } from './utils/drawHeatMap';
-import { loadCSV } from './utils/loadcsv';
+import { drawHeatmap } from '../../utils/drawHeatMap';
+import { loadCSV } from '../../utils/loadcsv';
 
 interface UploadCSVBtnProps {
   container: HTMLDivElement | null;

@@ -1,26 +1,22 @@
-import { useState } from 'react';
-// import styled, { css } from 'styled-components';
-import { ActionBar } from './ActionBar';
+import { MemoryRouter, Switch, Route } from 'react-router-dom';
+import { EyeTracker } from './components/EyeTracker';
 
-function App() {
-  const [containerDiv, setContainerDiv] = useState<HTMLDivElement | null>();
-  const [bgImage, setBgImg] = useState<string | undefined>();
+import { HeatMap } from './components/HeatMap';
+import { Home } from './components/Home';
 
+const App = () => {
   return (
-    <div className="w-screen h-screen relative">
-      <div
-        style={{
-          background: bgImage && `url(${bgImage}) no-repeat center center fixed`
-        }}
-        className="h-full w-full overflow-hidden"
-        ref={(c) => setContainerDiv(c)}
-      >
-        <header className="flex w-full h-screen justify-center items-center">
-          {containerDiv && <ActionBar container={containerDiv} setBgImg={setBgImg} />}
-        </header>
-      </div>
-    </div>
+    <>
+      <MemoryRouter>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/eye-tracker" component={EyeTracker} />
+          <Route path="/heatmap" component={HeatMap} />
+          {/* <Route exact path="/" component={Home} /> */}
+        </Switch>
+      </MemoryRouter>
+    </>
   );
-}
+};
 
 export default App;

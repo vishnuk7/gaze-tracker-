@@ -4,7 +4,7 @@
 
 import { BgImgBtn } from './BgImgBtn';
 import { UploadCSVBtn } from './UploadCSVBtn';
-import { drawHeatmap } from './utils/drawHeatMap';
+import { drawHeatmap } from '../../utils/drawHeatMap';
 
 interface ActionBarProps {
   container: HTMLDivElement | null;
