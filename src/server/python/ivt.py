@@ -91,7 +91,9 @@ time=df.ts
 sfix,efix = fixation_detection(x, y, time)
 
 print(efix)
+# return efix
 
-with open('extractedFixations.csv', 'w') as file:
-    write = csv.writer(file)
-    write.writerows(efix)
+
+# with open('extractedFixations.csv', 'w') as file:
+#     write = csv.writer(file)
+#     write.writerows(efix)

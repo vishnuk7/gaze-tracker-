@@ -16,12 +16,15 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
 import { server } from '../server';
+import { py } from '../server/python/ivt';
 /* server running on localhost 4000 */
 server();
+// py();
 
 export default class AppUpdater {
   constructor() {
@@ -36,7 +39,13 @@ let mainWindow: BrowserWindow | null = null;
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+  event.reply('ipc-example', msgTemplate('🔥 haha'));
+});
+
+ipcMain.on('data-csv', async (event, arg) => {
+  const msg = await py();
+  console.log(msg);
+  event.reply('data-csv', msg);
 });
 
 if (process.env.NODE_ENV === 'production') {

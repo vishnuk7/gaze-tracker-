@@ -1,11 +1,13 @@
 import express from 'express';
+import cros from 'cors';
 import path from 'path';
 import { py } from './python/ivt';
 
 export const server = () => {
   const app = express();
 
-  app.use(express.static('public'));
+  app.use(express.static('data'));
+  app.use(cros());
 
   const port = 4000;
 
@@ -20,6 +22,4 @@ export const server = () => {
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
-
-  py();
 };

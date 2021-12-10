@@ -20,6 +20,8 @@ export const loadCSV = (fileData: string): resType[] | null => {
         obj[header[j]] = parseInt(currentLine[j], 10);
       }
 
+      console.log(res);
+
       res.push(obj);
     }
     return res;

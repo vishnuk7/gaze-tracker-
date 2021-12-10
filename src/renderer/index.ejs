@@ -11,10 +11,11 @@
     <div id="root"></div>
   </body>
   <script>
-    window.electron.ipcRenderer.once('ipc-example', (arg) => {
-      // eslint-disable-next-line no-console
-      console.log(arg);
-    });
+    // window.electron.ipcRenderer.on('datacsv', (arg) => {
+    //   // eslint-disable-next-line no-console
+    //   console.log('nanan')
+    //   console.log(arg);
+    // });
 
     window.electron.ipcRenderer.myPing();
   </script>
