@@ -20,7 +20,16 @@ export const Home = () => {
           hist.push('/heatmap');
         }}
       >
-        tracker
+        heatmap
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          hist.push('/cal');
+        }}
+      >
+        cal
       </button>
     </>
   );
