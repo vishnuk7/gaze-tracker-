@@ -22,6 +22,7 @@ import { resolveHtmlPath } from './util';
 
 import { server } from '../server';
 import { py } from '../server/python/ivt';
+import { SaveCSV } from './SaveCSV';
 /* server running on localhost 4000 */
 server();
 // py();
@@ -46,6 +47,10 @@ ipcMain.on('data-csv', async (event, arg) => {
   const msg = await py();
   console.log(msg);
   event.reply('data-csv', msg);
+});
+
+ipcMain.on('save-csv', async (event, arg) => {
+  SaveCSV(arg);
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -87,12 +92,13 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 1060,
+    height: 1060,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    autoHideMenuBar: true
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));

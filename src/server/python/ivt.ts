@@ -5,7 +5,8 @@ import path from 'path';
 const runPy = async () => {
   const options = {
     pythonOptions: ['-u'],
-    scriptPath: path.join(__dirname)
+    scriptPath: path.join(__dirname),
+    args: ['500']
   };
 
   // wrap it in a promise, and `await` the result

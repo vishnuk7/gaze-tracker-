@@ -1,5 +1,5 @@
 {
-  "name": "electron-react-boilerplate",
+  "name": "gaze-tracker",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Fast Refresh for rapid application development",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "GazeTracker",
+    "appId": "org.erb.GazeTracker",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -170,6 +170,7 @@
     "@types/history": "4.7.9",
     "@types/jest": "^27.0.2",
     "@types/node": "16.11.6",
+    "@types/objects-to-csv": "^1.3.1",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@types/react-router": "^5.1.17",
@@ -240,6 +241,7 @@
     "express": "^4.17.1",
     "heatmapjs": "^2.0.2",
     "history": "4.x.x",
+    "objects-to-csv": "^1.3.6",
     "python-shell": "^3.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

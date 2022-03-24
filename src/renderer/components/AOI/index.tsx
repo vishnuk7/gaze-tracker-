@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { ActionBar } from './ActionBar';
+import { MostViewed } from './MostViewed';
 
-export const HeatMap = () => {
+export const AOI = () => {
   const [containerDiv, setContainerDiv] = useState<HTMLDivElement | null>();
   const [bgImage, setBgImg] = useState<string | undefined>();
+
+  console.log('hey, there');
 
   return (
     <div className="w-screen h-screen relative">
@@ -15,6 +18,7 @@ export const HeatMap = () => {
         ref={(c) => setContainerDiv(c)}
       >
         {/* <img style={{ width: '1050px', height: '1050px' }} src={bgImage} alt="" height="1050px" width="1050px" /> */}
+        <MostViewed />
       </div>
       <>
         <header className="flex w-full h-screen justify-center items-center">

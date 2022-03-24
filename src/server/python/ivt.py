@@ -13,7 +13,7 @@ def remove_missing(x, y, time, missing):
 	return x, y, time
 
 #maxdist was 25 as default
-def fixation_detection(x, y, time, missing=0.0, maxdist=100, mindur=50):
+def fixation_detection(x, y, time, missing=0.0, maxdist=50, mindur=150):
 
 	"""Detects fixations, defined as consecutive samples with an inter-sample
 	distance of less than a set amount of pixels (disregarding missing data)
@@ -74,6 +74,101 @@ def fixation_detection(x, y, time, missing=0.0, maxdist=100, mindur=50):
 		Efix.append([Sfix[-1][0], time[len(x)-1], time[len(x)-1]-Sfix[-1][0], x[si], y[si]])
 	return Sfix, Efix
 
+def saccade_detection(x, y, time, missing=0.0, minlen=100, maxvel=500, maxacc=1000):
+
+	"""Detects saccades, defined as consecutive samples with an inter-sample
+	velocity of over a velocity threshold or an acceleration threshold
+
+	arguments
+	x		-	numpy array of x positions
+	y		-	numpy array of y positions
+	time		-	numpy array of tracker timestamps in milliseconds
+	keyword arguments
+	missing	-	value to be used for missing data (default = 0.0)
+	minlen	-	minimal length of saccades in milliseconds; all detected
+				saccades with len(sac) < minlen will be ignored
+				(default = 5)
+	maxvel	-	velocity threshold in pixels/second (default = 40)
+	maxacc	-	acceleration threshold in pixels / second**2
+				(default = 340)
+
+	returns
+	Ssac, Esac
+			Ssac	-	list of lists, each containing [starttime]
+			Esac	-	list of lists, each containing [starttime, endtime, duration, startx, starty, endx, endy]
+	"""
+
+	# CONTAINERS
+	Ssac = []
+	Esac = []
+
+	# INTER-SAMPLE MEASURES
+	# the distance between samples is the square root of the sum
+	# of the squared horizontal and vertical interdistances
+	intdist = (numpy.diff(x)**2 + numpy.diff(y)**2)**0.5
+	# get inter-sample times
+	inttime = numpy.diff(time)
+	# recalculate inter-sample times to seconds
+	inttime = inttime / 1000.0
+
+	# VELOCITY AND ACCELERATION
+	# the velocity between samples is the inter-sample distance
+	# divided by the inter-sample time
+	vel = intdist / inttime
+	# the acceleration is the sample-to-sample difference in
+	# eye movement velocity
+	acc = numpy.diff(vel)
+
+	# SACCADE START AND END
+	t0i = 0
+	stop = False
+	while not stop:
+		# saccade start (t1) is when the velocity or acceleration
+		# surpass threshold, saccade end (t2) is when both return
+		# under threshold
+
+		# detect saccade starts
+		sacstarts = numpy.where((vel[1+t0i:] > maxvel).astype(int) + (acc[t0i:] > maxacc).astype(int) >= 1)[0]
+		if len(sacstarts) > 0:
+			# timestamp for starting position
+			t1i = t0i + sacstarts[0] + 1
+			if t1i >= len(time)-1:
+				t1i = len(time)-2
+			t1 = time[t1i]
+
+			# add to saccade starts
+			Ssac.append([t1])
+
+			# detect saccade endings
+			sacends = numpy.where((vel[1+t1i:] < maxvel).astype(int) + (acc[t1i:] < maxacc).astype(int) == 2)[0]
+
+			if len(sacends) > 0:
+				# timestamp for ending position
+				t2i = sacends[0] + 1 + t1i + 2
+				if t2i >= len(time):
+					t2i = len(time)-1
+				t2 = time[t2i]
+				dur = t2 - t1
+
+				# ignore saccades that did not last long enough
+				if dur >= minlen:
+					# add to saccade ends
+					Esac.append([t1, t2, dur, x[t1i], y[t1i], x[t2i], y[t2i]])
+				else:
+					# remove last saccade start on too low duration
+					Ssac.pop(-1)
+
+				# update t0i
+				t0i = 0 + t2i
+			else:
+				stop = True
+		else:
+			stop = True
+
+
+
+	return Ssac, Esac
+
 #read data
 df = pd.read_csv('http://localhost:4000/data')
 
@@ -86,14 +181,20 @@ y = df.y
 #timestamp
 time=df.ts
 
+import sys
+# max_dist = int(sys.argv[1])
+
+
 #sfix contains only start time
 #efix contains start time, end time, duration, start x, start y
 sfix,efix = fixation_detection(x, y, time)
+# ssac, esac = saccade_detection(x, y, time)
 
 print(efix)
+# print(esac)
 # return efix
 
 
-# with open('extractedFixations.csv', 'w') as file:
-#     write = csv.writer(file)
-#     write.writerows(efix)
+with open('extractedFixations.csv', 'w') as file:
+    write = csv.writer(file)
+    write.writerows(efix)
